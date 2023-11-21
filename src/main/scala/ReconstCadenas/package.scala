@@ -60,13 +60,45 @@ package object ReconstCadenas {
     val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
     generarCadenaTurbo(2, conjuntoInicial)
   }
-//  def reconstruirCadenaTurboMejorada (n : Int , o : Oraculo ) : Seq [Char]= {
-//    // recibela longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
-//    // y devuelve la secuencia reconstruida
-//    // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
-//    // Usa el filtro para ir mas rapido
-//
-//  }
+  def reconstruirCadenaTurboMejorada (n : Int , o : Oraculo ) : Seq [Char]= {
+    // recibela longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
+    // y devuelve la secuencia reconstruida
+    // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
+    // Usa el filtro para ir mas rapido
+
+    // Definición del alfabeto
+    val alfabeto = Seq('a', 'c', 'g', 't')
+
+    // Función principal para generar la cadena turbo mejorada
+    def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+      val conjSec = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+      val newSC = conjSec.filter(s => o(s))
+
+      val resultado = newSC.to(LazyList).find(_.length == n)
+      resultado match {
+        case Some(seq) => seq
+        case None =>
+          if (k > n) Seq.empty[Char]
+          else generarCadenaTurbo(k * 2, filtrar(newSC, k))
+      }
+    }
+
+    // Función de filtrado para eliminar secuencias problemáticas según la descripción dada
+    def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
+      SC.filter { s1 =>
+        SC.forall { s2 =>
+          val s = s1 ++ s2
+          SC.exists(w => w.sliding(k, 1).forall(sub => s.containsSlice(sub)))
+        }
+      }
+    }
+
+    // Conjunto inicial de secuencias de longitud 1 del alfabeto
+    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+
+    // Llamada inicial a la función de generación
+    generarCadenaTurbo(2, conjuntoInicial)
+  }
 //  def reconstruirCadenaTurboAcelerada (n : Int , o : Oraculo ) : Seq [Char]= {
 //    // recibela longitud de la secuencia que hay que reconstruir (n , potencia de 2), y un oraculo para esa secuencia
 //    // y devuelve la secuencia reconstruida
