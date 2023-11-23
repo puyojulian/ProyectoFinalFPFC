@@ -1,8 +1,11 @@
 import common._
+
 import scala.collection.parallel.CollectionConverters._
 import Oraculo._
 import ArbolSufijos._
-import scala.concurrent.{Future, Await}
+
+import scala.annotation.meta.param
+import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
@@ -72,4 +75,132 @@ package object ReconstCadenasPar {
 //    // Usa paralelismo de tareas y/o datos
 //
 //  }*/
+
+  def reconstruirCadenaTurboParop1(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+    val alfabeto = Seq('a', 'c', 'g', 't')
+
+    def generarCadenaTurboParalelo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+      val conjSec = if (SC.size < umbral) {
+        SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+      } else {
+        val futures = SC.grouped(umbral).map { group =>
+          Future(group.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2)))
+        }
+        Await.result(Future.sequence(futures), Duration.Inf).flatten.toSet
+      }
+
+      val newSC = conjSec.filter(o)
+      val resultado = newSC.to(LazyList).find(_.length == n)
+      resultado match {
+        case Some(seq) => seq
+        case None =>
+          if (k > n) Seq.empty[Char]
+          else generarCadenaTurboParalelo(k * 2, newSC)
+      }
+    }
+
+    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+    generarCadenaTurboParalelo(2, conjuntoInicial)
+  }
+
+  def reconstruirCadenaTurboPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+    val alfabeto = Seq('a', 'c', 'g', 't')
+
+    def generarCadenaTurboPar(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+      val conjSec = if (SC.size < umbral) {
+        SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+      } else {
+        val grouped = SC.grouped(umbral).toSeq
+        val futures = for (i <- grouped.indices) yield task {
+          grouped(i).flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+        }
+        futures.flatMap(future => future.join()).toSet
+      }
+
+      val newSC = conjSec.filter(o)
+      val resultado = newSC.to(LazyList).find(_.length == n)
+      resultado match {
+        case Some(seq) => seq
+        case None =>
+          if (k > n) Seq.empty[Char]
+          else generarCadenaTurboPar(k * 2, newSC)
+      }
+    }
+
+    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+    generarCadenaTurboPar(2, conjuntoInicial)
+  }
+
+  def reconstruirCadenaTurboMejoradaPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+    val alfabeto = Seq('a', 'c', 'g', 't')
+
+    def generarCadenaTurboParalelo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+      val conjSec = if (SC.size < umbral) {
+        SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+      } else {
+        val grouped = SC.grouped(umbral).toSeq
+        val futures = for (i <- grouped.indices) yield task {
+          grouped(i).flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+        }
+        futures.flatMap(future => future.join()).toSet
+      }
+
+      val newSC = conjSec.filter(s => o(s))
+      val resultado = newSC.to(LazyList).find(_.length == n)
+      resultado match {
+        case Some(seq) => seq
+        case None =>
+          if (k > n) Seq.empty[Char]
+          else generarCadenaTurboParalelo(k * 2, filtrar(newSC, k))
+      }
+    }
+
+    def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
+      SC.filter { s1 =>
+        SC.forall { s2 =>
+          val s = s1 ++ s2
+          SC.exists(w => w.sliding(k, 1).forall(sub => s.containsSlice(sub)))
+        }
+      }
+    }
+
+    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+    generarCadenaTurboParalelo(2, conjuntoInicial)
+  }
+
+  def reconstruirCadenaTurboMejoradaParWop(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+    val alfabeto = Seq('a', 'c', 'g', 't')
+
+    def generarCadenaTurboParalelo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+      val conjSec = if (SC.size < umbral) {
+        SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+      } else {
+        val futures = SC.grouped(umbral).map { group =>
+          Future(group.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2)))
+        }
+        Await.result(Future.sequence(futures), Duration.Inf).flatten.toSet
+      }
+
+      val newSC = conjSec.filter(s => o(s))
+      val resultado = newSC.to(LazyList).find(_.length == n)
+      resultado match {
+        case Some(seq) => seq
+        case None =>
+          if (k > n) Seq.empty[Char]
+          else generarCadenaTurboParalelo(k * 2, filtrar(newSC, k))
+      }
+    }
+
+    def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
+      SC.filter { s1 =>
+        SC.forall { s2 =>
+          val s = s1 ++ s2
+          SC.exists(w => w.sliding(k, 1).forall(sub => s.containsSlice(sub)))
+        }
+      }
+    }
+
+    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+    generarCadenaTurboParalelo(2, conjuntoInicial)
+  }
 }

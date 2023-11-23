@@ -29,7 +29,7 @@ val umbral1 = 2
 val umbral2 = 4
 val umbral3 = 8
 
-reconstruirCadenaIngenuoPar(umbral1)(sec1.length, or_1)
+//reconstruirCadenaIngenuoPar(umbral1)(sec1.length, or_1)
 
 reconstruirCadenaIngenuo(sec1.length, or_1)
 reconstruirCadenaIngenuo(sec2.length, or_2)
@@ -116,6 +116,13 @@ val s1_2048 = ss2_2048(10)
 val s2_2048 = ss2_4096(10)
 val s1_4096 = ss2_4096(11)
 
+val resultadoguia = reconstruirCadenaTurbo(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+val resultaprueba1 = reconstruirCadenaTurboParop1(1)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+val resultaprueba2 = reconstruirCadenaTurboPar(1)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+
+val resultadoguia1 = reconstruirCadenaTurboMejorada(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+val resultadoprueba3 = reconstruirCadenaTurboMejoradaPar(1)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+val resultadoprueba4 = reconstruirCadenaTurboMejoradaParWop(1)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
 
 // Pruebas funcionales
 
