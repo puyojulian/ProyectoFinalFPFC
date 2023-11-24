@@ -293,7 +293,7 @@ import ArbolSufijos._
 //pruebasTurboAcelerada(ss2_2048)
 //pruebasTurboAcelerada(ss2_4096)
 
-// Pruebas de Pertenece:
+// Pruebas de pertenece():
 val t = Nodo(' ', false, List(
   Nodo('a', false, List(
     Nodo('c', true, List(
@@ -328,9 +328,35 @@ val secuencia6 = Seq('c','a')
 pertenece(secuencia6,t)
 val secuencia7 = Seq('a','c','a')
 pertenece(secuencia7,t)
-val secuencia8 = Seq('g')
+val secuencia8 = Seq('g','t')
 pertenece(secuencia8,t)
 val secuencia9 = Seq('g') // 'g' no está en el árbol de sufijos t.
 pertenece(secuencia9,t)
 val secuencia10 = Seq(' ') // ' ' no está en el diccionario.
 pertenece(secuencia10,t)
+
+// Pruebas de adicionar():
+val secuencia11 = Seq('a','c','a','c','t')
+val secuencia12 = Seq('g','t')
+val secuencia13 = Seq('g','t','a')
+val t2 = adicionar(secuencia9,t)
+val t3 = adicionar(secuencia11,t)
+val t4 = adicionar(secuencia12,t2)
+val t5 = adicionar(secuencia13,t4)
+val t6 = adicionar(secuencia13,t)
+print(t)
+print(t2)
+print(t3)
+print(t4)
+print(t5)
+print(t6)
+pertenece(secuencia11,t3)
+pertenece(secuencia8,t5)
+pertenece(secuencia13,t5)
+pertenece(secuencia13,t6)
+
+// Pruebas de arbolDeSufijos():
+val ss = Seq(Seq('c'),Seq('t'),Seq('c','t'),Seq('a','c'),Seq('a','c','t'),Seq('c','a','c'),Seq('a','c','a','c'),Seq('c','a','c','t'))
+val t_reconstruido = arbolDeSufijos(ss)
+print(t_reconstruido)
+print(t)

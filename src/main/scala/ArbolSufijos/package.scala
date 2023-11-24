@@ -16,37 +16,6 @@ package object ArbolSufijos {
       case Hoja(c,_) => Seq[Char](c)
     }
   }
-//  def pertenece(s: Seq[Char], t: Trie): Boolean = {
-//    // Devuelve true si la secuencia s es reconocida por el trie t, y false si no.
-//    val heads = cabezas(t)
-//    val continuara = heads.to(LazyList).find(_ == s.head)
-//    continuara match {
-//      case Some(char) => {
-//        s.tail match {
-//          case caracter::cola => {
-//            t match {
-//              case Nodo(_, _, hijos) =>
-//                val childOption: Option[Trie] = hijos.find { hijo =>
-//                  cabezas(hijo).to(LazyList).find(_ == caracter).contains(raiz(hijo))
-//                }
-//                childOption match {
-//                  case Some(child) => pertenece(cola, child)
-//                  case None => false
-//                }
-//              case Hoja(_, _) => false
-//            }
-//          }
-//          case Nil => {
-//            t match {
-//              case Nodo(_, _, _) => false
-//              case Hoja(_, marcada) => if (marcada) true else false
-//            }
-//          }
-//        }
-//      }
-//      case None => false
-//    }
-//  }
 
   def pertenece(s: Seq[Char], t: Trie): Boolean = {
     // Devuelve true si la secuencia s es reconocida por el trie t, y false si no.
@@ -79,24 +48,79 @@ package object ArbolSufijos {
           }
         }
 
-    t match {
-      case Nodo(' ', _, hijos) => {
-        val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == s.head)
-        childOption match {
-          case Some(child) => perteneceInterna(s, child)
-          case None => false
+    if (s.isEmpty)
+      false // If the input sequence is empty, consider it as not belonging to any tree
+    else {
+      t match {
+        case Nodo(' ', _, hijos) => {
+          val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == s.head)
+          childOption match {
+            case Some(child) => perteneceInterna(s, child)
+            case None => false
+          }
         }
+        case Hoja(_, _) => false
       }
-      case Hoja(_, _) => false
     }
   }
 
-//  def adicionar(s: Seq[Char], t: Trie): Trie = {
-//    // Adiciona una secuencia de uno o mas caracteres a un trie
-//
-//  }
-//  def arbolDeSufijos(ss: Seq[Seq[Char]]): Trie = {
-//    // dada una secuencia no vacia de secuencias de vuelve el arbol de sufijos asociado a esas secuencias
-//
-//  }
+  def adicionar(s: Seq[Char], t: Trie): Trie = {
+    // Adiciona una secuencia de uno o mas caracteres a un trie
+    def crearRama(s: Seq[Char]): Trie = {
+      s match {
+        case cabeza::cola => cola match {
+          case head::tail => Nodo(cabeza, false, List(crearRama(cola)))
+          case Nil => Hoja(cabeza, true)
+        }
+      }
+    }
+
+    def addToTrie(arbolOriginal: Trie, camino: Seq[Char], nuevaRama: Trie): Trie = {
+      def agregarRama(arbolActual: Trie, caminoRestante: Seq[Char]): Trie = (arbolActual, caminoRestante) match {
+        case (Nodo(car, marcada, hijos), head :: tail) =>
+          // Recursively traverse the tree until reaching the desired path
+          val updatedHijos = hijos.map { hijo =>
+            if (raiz(hijo) == head) agregarRama(hijo, tail)
+            else hijo
+          }
+          Nodo(car, marcada, updatedHijos)
+        case (Hoja(car, marcada), Seq()) =>
+          // Convert the leaf into a Nodo with the new subtree as a child
+          Nodo(car, marcada, List(nuevaRama))
+        case (Nodo(car, marcada, hijos), Seq()) =>
+          // Add the new node to the list of children when the path stops at a Nodo
+          Nodo(car, marcada, hijos :+ nuevaRama)
+        case (_, Seq()) =>
+          // Handle the case where the path is empty
+          arbolActual
+        case _ =>
+          // For other cases, return the tree unchanged
+          arbolActual
+      }
+
+      agregarRama(arbolOriginal, camino)
+    }
+
+    def dividirSecuencia(s: Seq[Char], t: Trie): (Seq[Char], Seq[Char]) = {
+      // Retorna el prefijo reconocido más largo
+      val parteReconocida = s.inits.find(prefix => pertenece(prefix, t)).getOrElse(Seq.empty)
+      // La parte no reconocida es la diferencia entre la secuencia original y la parte reconocida.
+      val parteNoReconocida = s.drop(parteReconocida.length)
+      (parteReconocida, parteNoReconocida)
+    }
+
+    val (secuenciaEnArbol, secuenciaNoEnArbol) = dividirSecuencia(s, t)
+    val nuevaRama = crearRama(secuenciaNoEnArbol)
+
+    addToTrie(t, secuenciaEnArbol, nuevaRama)
+  }
+
+
+  def arbolDeSufijos(ss: Seq[Seq[Char]]): Trie = {
+    // dada una secuencia no vacia de secuencias de vuelve el arbol de sufijos asociado a esas secuencias
+    val arbolVacío: Trie = Nodo(' ', false, List())
+    ss.foldLeft(arbolVacío) { (acc, s) =>
+      adicionar(s, acc)
+    }
+  }
 }
