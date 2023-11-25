@@ -29,7 +29,7 @@ package object ReconstCadenas {
       } yield {
         w
       }
-      val resultado = newSC.to(LazyList).find(_.length == n)
+      val resultado = newSC.to(LazyList).find(w => w.length == n)
       resultado match {
         case Some(seq) => seq
         case None =>
@@ -49,7 +49,7 @@ package object ReconstCadenas {
     def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
       val conjSec = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
       val newSC = conjSec.filter(o)
-      val resultado = newSC.to(LazyList).find(_.length == n)
+      val resultado = newSC.to(LazyList).find(w => w.length == n)
       resultado match {
         case Some(seq) => seq
         case None =>
@@ -71,40 +71,68 @@ package object ReconstCadenas {
 
     // Función principal para generar la cadena turbo mejorada
     def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
-      val conjSec = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
-      val newSC = conjSec.filter(s => o(s))
+      val conjSec = filtrar(SC, k)
+      val newSC = conjSec.filter(o)
 
-      val resultado = newSC.to(LazyList).find(_.length == n)
+      val resultado = newSC.to(LazyList).find(w => w.length == n)
       resultado match {
         case Some(seq) => seq
         case None =>
           if (k > n) Seq.empty[Char]
-          else generarCadenaTurbo(k * 2, filtrar(newSC, k))
+          else generarCadenaTurbo(k * 2, newSC)
       }
     }
 
     // Función de filtrado para eliminar secuencias problemáticas según la descripción dada
     def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
-      SC.filter { s1 =>
-        SC.forall { s2 =>
-          val s = s1 ++ s2
-          SC.exists(w => w.sliding(k, 1).forall(sub => s.containsSlice(sub)))
-        }
-      }
+      val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+      val F = S.filter { s => s.sliding(k).forall(w => SC(w)) }
+      F
     }
 
     // Conjunto inicial de secuencias de longitud 1 del alfabeto
     val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
 
     // Llamada inicial a la función de generación
-    generarCadenaTurbo(2, conjuntoInicial)
+    generarCadenaTurbo(1, conjuntoInicial)
   }
-//  def reconstruirCadenaTurboAcelerada (n : Int , o : Oraculo ) : Seq [Char]= {
-//    // recibela longitud de la secuencia que hay que reconstruir (n , potencia de 2), y un oraculo para esa secuencia
-//    // y devuelve la secuencia reconstruida
-//    // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
-//    // Usa el filtro para ir mas rapido
-//    // Usa arboles de sufijos para guardar Seq[Seq[Char]]
-//
-//  }
+
+  def reconstruirCadenaTurboAcelerada(n : Int , o : Oraculo ) : Seq [Char]= {
+    // recibela longitud de la secuencia que hay que reconstruir (n , potencia de 2), y un oraculo para esa secuencia
+    // y devuelve la secuencia reconstruida
+    // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
+    // Usa el filtro para ir mas rapido
+    // Usa arboles de sufijos para guardar Seq[Seq[Char]]
+
+    // Definición del alfabeto
+    val alfabeto = Seq('a', 'c', 'g', 't')
+
+    // Función principal para generar la cadena turbo mejorada
+    def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+      val conjSec = filtrar(SC, k)
+      val newSC = conjSec.filter(o)
+
+      val resultado = newSC.to(LazyList).find(w => w.length == n)
+      resultado match {
+        case Some(secuencia) => secuencia
+        case None =>
+          if (k > n) Seq.empty[Char]
+          else generarCadenaTurbo(k * 2, newSC)
+      }
+    }
+
+    // Función de filtrado para eliminar secuencias problemáticas según la descripción dada
+    def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
+      val trieSC = arbolDeSufijos(SC.toSeq)
+      val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+      val F = S.filter{s => s.sliding(k).forall(w => pertenece(w, trieSC))}
+      F
+    }
+
+    // Conjunto inicial de secuencias de longitud 1 del alfabeto
+    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+
+    // Llamada inicial a la función de generación
+    generarCadenaTurbo(1, conjuntoInicial)
+  }
 }
