@@ -63,63 +63,6 @@ package object ArbolSufijos {
     }
   }
 
-  def anadir(s: Seq[Char], t: Trie): Boolean = {
-    // Devuelve true si la secuencia s es reconocida por el trie t, y false si no.
-
-    def crearRama(s: Seq[Char]): Trie = {
-      s match {
-        case cabeza :: cola => cola match {
-          case head :: tail => Nodo(cabeza, marcada = false, List(crearRama(cola)))
-          case Nil => Hoja(cabeza, marcada = true)
-        }
-        case Nil => Nodo(' ', marcada = false, List())
-      }
-    }
-    def anadirInterna(s: Seq[Char], t: Trie): Boolean = {
-      s match {
-        case head :: cola => cola match {
-          case caracter :: tail => {
-            t match {
-              case Nodo(_, _, hijos) => {
-                val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == caracter)
-                childOption match {
-                  case Some(child) => anadirInterna(cola, child)
-                  case None => false
-                }
-              }
-              case Hoja(_, _) => false
-            }
-          }
-          case Nil =>
-            t match {
-              case Nodo(_, marcada, _) => marcada
-              case Hoja(_, marcada) => marcada
-            }
-        }
-        case Nil =>
-          t match {
-            case Nodo(_, marcada, _) => marcada
-            case Hoja(_, marcada) => marcada
-          }
-      }
-    }
-
-    if (s.isEmpty)
-      false // Si la secuencia de entrada esta vacia, se considera que no pertenece a ningun arbol.
-    else {
-      t match {
-        case Nodo(' ', _, hijos) => {
-          val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == s.head)
-          childOption match {
-            case Some(child) => anadirInterna(s, child)
-            case None => false
-          }
-        }
-        case Hoja(_, _) => false
-      }
-    }
-  }
-
   def perteneceLaxa(s: Seq[Char], t: Trie): Boolean = {
     def perteneceLaxaInterna(s: Seq[Char], t: Trie): Boolean = {
       s match {
