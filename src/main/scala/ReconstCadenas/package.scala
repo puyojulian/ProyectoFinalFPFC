@@ -22,8 +22,8 @@ package object ReconstCadenas {
     // o una secuencia vacía si no encontró nada ('resultado = None')
     resultado.getOrElse(Seq.empty[Char])
   }
-  def reconstruirCadenaMejorado(n: Int, o: Oraculo ): Seq[Char] = {
-    // recibela longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
+  def reconstruirCadenaMejorado(n: Int, o: Oraculo): Seq[Char] = {
+    // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
     // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
     val alfabeto = Seq('a', 'c', 'g', 't')
@@ -53,11 +53,10 @@ package object ReconstCadenas {
     generarCadena(1, Set(Seq.empty[Char]))
   }
 
-  def reconstruirCadenaTurbo(n : Int , o : Oraculo ): Seq [Char] = {
-    // recibela longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
+  def reconstruirCadenaTurbo(n: Int, o: Oraculo): Seq [Char] = {
+    // recibe la longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
     // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
-
     val alfabeto = Seq('a', 'c', 'g', 't')
     // En base al algoritmo anterior, se mejora la implementación, cambiando en que ya no se
     // concatena el alfabeto sino las secuencias obtenidas en la "iteración" inmediatamente anterior.
@@ -79,21 +78,17 @@ package object ReconstCadenas {
     // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }
-  def reconstruirCadenaTurboMejorada (n : Int , o : Oraculo ) : Seq [Char]= {
-    // recibela longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
+  def reconstruirCadenaTurboMejorada(n: Int, o: Oraculo) : Seq [Char]= {
+    // recibe la longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
     // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
     // Usa el filtro para ir mas rapido
-
-    // Definición del alfabeto
     val alfabeto = Seq('a', 'c', 'g', 't')
-
     // La implementación anterior se mejora agregando 'filtrar()', la cual genera 'conjSec' pero a la vez
     // conservando solo aquellas secuencias cuyas "componentes" de tamaño 'k' pertenecen a 'SC'.
     def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
       val conjSec = filtrar(SC, k)
       val newSC = conjSec.filter(o)
-
       val resultado = newSC.to(LazyList).find(w => w.length == n)
       resultado match {
         case Some(secuencia) => secuencia
@@ -102,38 +97,30 @@ package object ReconstCadenas {
           else generarCadenaTurbo(k * 2, newSC)
       }
     }
-
     // Función de filtrado para eliminar secuencias problemáticas según la descripción dada
     def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
       val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
       val F = S.filter { s => s.sliding(k).forall(w => SC(w)) }
       F
     }
-
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesaria.
     val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
-
     // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }
-
-  def reconstruirCadenaTurboAcelerada(n : Int , o : Oraculo ) : Seq[Char]= {
-    // recibela longitud de la secuencia que hay que reconstruir (n , potencia de 2), y un oraculo para esa secuencia
+  def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo) : Seq[Char]= {
+    // recibe la longitud de la secuencia que hay que reconstruir (n , potencia de 2), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
     // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
     // Usa el filtro para ir mas rapido
     // Usa arboles de sufijos para guardar Seq[Seq[Char]]
-
-    // Definición del alfabeto
     val alfabeto = Seq('a', 'c', 'g', 't')
-
     // La implementación anterior se mejora utilizando una estructura de arbol de sufijos para
     // disminuir el tiempo en que se puede confirmar la pertenencia o no de una cadena dentro
     // del "conjunto" de secuencias actual ('SC'), específicamente dentro de 'filtrar()' ('trieSC').
     def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
       val conjSec = filtrar(SC, k)
       val newSC = conjSec.filter(o)
-
       val resultado = newSC.to(LazyList).find(w => w.length == n)
       resultado match {
         case Some(secuencia) => secuencia
@@ -142,18 +129,15 @@ package object ReconstCadenas {
           else generarCadenaTurbo(k * 2, newSC)
       }
     }
-
     // Función de filtrado para eliminar secuencias problemáticas según la descripción dada.
     def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
       val trieSC = arbolDeSufijos(SC.toSeq)
       val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
-      val F = S.filter{s => s.sliding(k).forall(w => pertenece(w, trieSC))}
+      val F = S.filter { s => s.sliding(k).forall(w => pertenece(w, trieSC)) }
       F
     }
-
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesitada.
     val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
-
     // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }

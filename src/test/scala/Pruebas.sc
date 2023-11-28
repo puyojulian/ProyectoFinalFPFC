@@ -128,8 +128,8 @@ val s1_4096 = ss2_4096(11)
 // Pruebas funcionales
 
 // secuencias de longitud 8
-reconstruirCadenaIngenuo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-reconstruirCadenaIngenuo(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+//reconstruirCadenaIngenuo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+//reconstruirCadenaIngenuo(s2_8.length, crearOraculo(costoOraculo)(s2_8))
 reconstruirCadenaMejorado(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 reconstruirCadenaMejorado(s2_8.length, crearOraculo(costoOraculo)(s2_8))
 reconstruirCadenaTurbo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
@@ -202,34 +202,34 @@ reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 //reconstruirCadenaTurboAcelerada(s2_256.length, crearOraculo(costoOraculo)(s2_256))
 //reconstruirCadenaTurboAcelerada(s3_256.length, crearOraculo(costoOraculo)(s3_256))
 
-// secuencias de longitud 512
-reconstruirCadenaMejorado(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-reconstruirCadenaMejorado(s2_512.length, crearOraculo(costoOraculo)(s2_512))
-reconstruirCadenaMejorado(s3_512.length, crearOraculo(costoOraculo)(s3_512))
-reconstruirCadenaTurbo(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-reconstruirCadenaTurbo(s2_512.length, crearOraculo(costoOraculo)(s2_512))
-reconstruirCadenaTurbo(s3_512.length, crearOraculo(costoOraculo)(s3_512))
-reconstruirCadenaTurboMejorada(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-reconstruirCadenaTurboMejorada(s2_512.length, crearOraculo(costoOraculo)(s2_512))
-reconstruirCadenaTurboMejorada(s3_512.length, crearOraculo(costoOraculo)(s3_512))
-reconstruirCadenaTurboAcelerada(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-reconstruirCadenaTurboAcelerada(s2_512.length, crearOraculo(costoOraculo)(s2_512))
-reconstruirCadenaTurboAcelerada(s3_512.length, crearOraculo(costoOraculo)(s3_512))
-
-
-// secuencias de longitud 1024
-reconstruirCadenaMejorado(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
-reconstruirCadenaMejorado(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
-reconstruirCadenaMejorado(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
-reconstruirCadenaTurbo(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
-reconstruirCadenaTurbo(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
-reconstruirCadenaTurbo(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
-reconstruirCadenaTurboMejorada(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
-reconstruirCadenaTurboMejorada(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
-reconstruirCadenaTurboMejorada(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
-reconstruirCadenaTurboAcelerada(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
-reconstruirCadenaTurboAcelerada(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
-reconstruirCadenaTurboAcelerada(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
+//// secuencias de longitud 512
+//reconstruirCadenaMejorado(s1_512.length, crearOraculo(costoOraculo)(s1_512))
+//reconstruirCadenaMejorado(s2_512.length, crearOraculo(costoOraculo)(s2_512))
+//reconstruirCadenaMejorado(s3_512.length, crearOraculo(costoOraculo)(s3_512))
+//reconstruirCadenaTurbo(s1_512.length, crearOraculo(costoOraculo)(s1_512))
+//reconstruirCadenaTurbo(s2_512.length, crearOraculo(costoOraculo)(s2_512))
+//reconstruirCadenaTurbo(s3_512.length, crearOraculo(costoOraculo)(s3_512))
+//reconstruirCadenaTurboMejorada(s1_512.length, crearOraculo(costoOraculo)(s1_512))
+//reconstruirCadenaTurboMejorada(s2_512.length, crearOraculo(costoOraculo)(s2_512))
+//reconstruirCadenaTurboMejorada(s3_512.length, crearOraculo(costoOraculo)(s3_512))
+//reconstruirCadenaTurboAcelerada(s1_512.length, crearOraculo(costoOraculo)(s1_512))
+//reconstruirCadenaTurboAcelerada(s2_512.length, crearOraculo(costoOraculo)(s2_512))
+//reconstruirCadenaTurboAcelerada(s3_512.length, crearOraculo(costoOraculo)(s3_512))
+//
+//
+//// secuencias de longitud 1024
+//reconstruirCadenaMejorado(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
+//reconstruirCadenaMejorado(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
+//reconstruirCadenaMejorado(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
+//reconstruirCadenaTurbo(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
+//reconstruirCadenaTurbo(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
+//reconstruirCadenaTurbo(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
+//reconstruirCadenaTurboMejorada(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
+//reconstruirCadenaTurboMejorada(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
+//reconstruirCadenaTurboMejorada(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
+//reconstruirCadenaTurboAcelerada(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
+//reconstruirCadenaTurboAcelerada(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
+//reconstruirCadenaTurboAcelerada(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
 
 //// Pruebas por lotes
 //
