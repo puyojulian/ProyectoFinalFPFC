@@ -3,6 +3,7 @@ import ReconstCadenas._
 import scala.util.Random
 import ReconstCadenasPar._
 import ArbolSufijos._
+import Benchmark._
 
 val random = new Random()
 
@@ -48,7 +49,7 @@ def secsLargasParaPruebas(n:Int):Seq[Seq[Char]] = for {
   s = secAlAzar(math.pow(2,i).toInt,Seq())
 } yield s
 
-def pruebasIngenuo (ss:Seq[Seq[Char]]) = for {
+def pruebasIngenuo(ss:Seq[Seq[Char]]) = for {
   s <- ss
   o = crearOraculo(costoOraculo)(s)
 } yield (s,reconstruirCadenaIngenuo(s.length,o))
@@ -145,6 +146,12 @@ reconstruirCadenaMejorado(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 reconstruirCadenaTurbo(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 reconstruirCadenaTurboMejorada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+
+// Benchmark
+compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+
 //
 //// secuencias de longitud 32
 //reconstruirCadenaMejorado(s1_32.length, crearOraculo(costoOraculo)(s1_32))
