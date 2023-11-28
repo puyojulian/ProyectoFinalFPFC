@@ -148,9 +148,9 @@ reconstruirCadenaTurboMejorada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 
 // Benchmark
-compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+//compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s3_128.length, crearOraculo(costoOraculo)(s3_128))
+//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s3_128.length, crearOraculo(costoOraculo)(s3_128))
+//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s3_128.length, crearOraculo(costoOraculo)(s3_128))
 
 //
 //// secuencias de longitud 32
@@ -383,7 +383,7 @@ def crearRama(s: Seq[Char]): Trie = {
 
 def dividirSecuencia(s: Seq[Char], t: Trie): (Seq[Char], Seq[Char]) = {
   // Retorna el prefijo reconocido más largo
-  val parteReconocida = s.inits.find(prefix => estaEnArbol(prefix, t)).getOrElse(Seq.empty)
+  val parteReconocida = s.inits.find(prefix => perteneceLaxa(prefix, t)).getOrElse(Seq.empty)
   // La parte no reconocida es la diferencia entre la secuencia original y la parte reconocida.
   val parteNoReconocida = s.drop(parteReconocida.length)
   (parteReconocida, parteNoReconocida)

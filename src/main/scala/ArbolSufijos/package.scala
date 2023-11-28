@@ -63,8 +63,65 @@ package object ArbolSufijos {
     }
   }
 
-  def estaEnArbol(s: Seq[Char], t: Trie): Boolean = {
-    def perteneceInterna(s: Seq[Char], t: Trie): Boolean = {
+  def anadir(s: Seq[Char], t: Trie): Boolean = {
+    // Devuelve true si la secuencia s es reconocida por el trie t, y false si no.
+
+    def crearRama(s: Seq[Char]): Trie = {
+      s match {
+        case cabeza :: cola => cola match {
+          case head :: tail => Nodo(cabeza, marcada = false, List(crearRama(cola)))
+          case Nil => Hoja(cabeza, marcada = true)
+        }
+        case Nil => Nodo(' ', marcada = false, List())
+      }
+    }
+    def anadirInterna(s: Seq[Char], t: Trie): Boolean = {
+      s match {
+        case head :: cola => cola match {
+          case caracter :: tail => {
+            t match {
+              case Nodo(_, _, hijos) => {
+                val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == caracter)
+                childOption match {
+                  case Some(child) => anadirInterna(cola, child)
+                  case None => false
+                }
+              }
+              case Hoja(_, _) => false
+            }
+          }
+          case Nil =>
+            t match {
+              case Nodo(_, marcada, _) => marcada
+              case Hoja(_, marcada) => marcada
+            }
+        }
+        case Nil =>
+          t match {
+            case Nodo(_, marcada, _) => marcada
+            case Hoja(_, marcada) => marcada
+          }
+      }
+    }
+
+    if (s.isEmpty)
+      false // Si la secuencia de entrada esta vacia, se considera que no pertenece a ningun arbol.
+    else {
+      t match {
+        case Nodo(' ', _, hijos) => {
+          val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == s.head)
+          childOption match {
+            case Some(child) => anadirInterna(s, child)
+            case None => false
+          }
+        }
+        case Hoja(_, _) => false
+      }
+    }
+  }
+
+  def perteneceLaxa(s: Seq[Char], t: Trie): Boolean = {
+    def perteneceLaxaInterna(s: Seq[Char], t: Trie): Boolean = {
       s match {
         case head :: cola => cola match {
           case caracter :: tail =>
@@ -72,7 +129,7 @@ package object ArbolSufijos {
               case Nodo(_, _, hijos) =>
                 val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == caracter)
                 childOption match {
-                  case Some(child) => perteneceInterna(cola, child)
+                  case Some(child) => perteneceLaxaInterna(cola, child)
                   case None => false
                 }
               case Hoja(_, _) => false
@@ -97,7 +154,7 @@ package object ArbolSufijos {
         case Nodo(' ', _, hijos) =>
           val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == s.head)
           childOption match {
-            case Some(child) => perteneceInterna(s, child)
+            case Some(child) => perteneceLaxaInterna(s, child)
             case None => false
           }
         case Hoja(_, _) => false
@@ -116,39 +173,34 @@ package object ArbolSufijos {
         case Nil => Nodo(' ', marcada = false, List())
       }
     }
-    def agregarAArbol(arbolOriginal: Trie, camino: Seq[Char], nuevaRama: Trie): Trie = {
-      def agregarRama(arbolActual: Trie, caminoRestante: Seq[Char], nuevaRama: Trie): Trie =
-        (arbolActual, caminoRestante, nuevaRama) match {
-          case (Nodo(car, marcada, hijos), head :: tail, _) =>
-            // Recorre recursivamente el árbol hasta llegar al camino deseado
-            val updatedHijos = hijos.map { hijo =>
-              if (raiz(hijo) == head) agregarRama(hijo, tail, nuevaRama)
-              else hijo
-            }
-            Nodo(car, marcada, updatedHijos)
-          case (Hoja(car, marcada), Nil, _) =>
-            // Convierte la hoja en un Nodo con el nuevo "subárbol" como hijo
-            Nodo(car, marcada, List(nuevaRama))
-          case (Nodo(car, marcada, hijos), Nil, _) =>
-            // Agrega el nuevo nodo a la lista de hijos cuando el camino se detiene en un Nodo
-            Nodo(car, marcada, hijos :+ nuevaRama)
-          case (Nodo(car, _, hijos), Nil, Nodo(' ', false, List())) =>
-            // Cambia el valor de 'marcada' si termina el camino y no hay que agregar una nueva rama
-            Nodo(car, marcada = true, hijos)
-        }
-      agregarRama(arbolOriginal, camino, nuevaRama)
+    def agregarRama(arbolActual: Trie, caminoRestante: Seq[Char], nuevaRama: Trie): Trie = {
+      (arbolActual, caminoRestante) match {
+        case (Nodo(car, marcada, hijos), head :: tail) =>
+          // Recorre recursivamente el árbol hasta llegar al camino deseado
+          val updatedHijos = hijos.map { hijo =>
+            if (raiz(hijo) == head) agregarRama(hijo, tail, nuevaRama)
+            else hijo
+          }
+          Nodo(car, marcada, updatedHijos)
+        case (Hoja(car, marcada), Nil) =>
+          // Convierte la hoja en un Nodo con el nuevo "subárbol" como hijo
+          Nodo(car, marcada, List(nuevaRama))
+        case (Nodo(car, marcada, hijos), Nil) =>
+          // Agrega el nuevo nodo a la lista de hijos cuando el camino se detiene en un Nodo
+          Nodo(car, marcada, hijos :+ nuevaRama)
+      }
     }
     // Divide la secuencia en dos: Una que se encuentra dentro del arbol y otra que no está para ser agregada.
     def dividirSecuencia(s: Seq[Char], t: Trie): (Seq[Char], Seq[Char]) = {
       // Retorna el prefijo reconocido más largo
-      val parteReconocida = s.inits.find(prefix => estaEnArbol(prefix, t)).getOrElse(Seq.empty)
+      val parteReconocida = s.inits.find(prefix => perteneceLaxa(prefix, t)).getOrElse(Seq.empty)
       // La parte no reconocida es la diferencia entre la secuencia original y la parte reconocida.
       val parteNoReconocida = s.drop(parteReconocida.length)
       (parteReconocida, parteNoReconocida)
     }
     val (secuenciaEnArbol, secuenciaNoEnArbol) = dividirSecuencia(s, t)
     val nuevaRama = crearRama(secuenciaNoEnArbol)
-    agregarAArbol(t, secuenciaEnArbol, nuevaRama)
+    agregarRama(t, secuenciaEnArbol, nuevaRama)
   }
 
 
