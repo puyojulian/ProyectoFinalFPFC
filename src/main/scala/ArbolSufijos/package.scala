@@ -135,11 +135,15 @@ package object ArbolSufijos {
     }
     // Divide la secuencia en dos: Una que se encuentra dentro del arbol y otra que no está para ser agregada.
     def dividirSecuencia(s: Seq[Char], t: Trie): (Seq[Char], Seq[Char]) = {
-      // Retorna el prefijo reconocido más largo
-      val parteReconocida = s.inits.find(prefix => perteneceLaxa(prefix, t)).getOrElse(Seq.empty)
-      // La parte no reconocida es la diferencia entre la secuencia original y la parte reconocida.
-      val parteNoReconocida = s.drop(parteReconocida.length)
-      (parteReconocida, parteNoReconocida)
+      def divideHelper(prefix: Seq[Char], remaining: Seq[Char]): (Seq[Char], Seq[Char]) = {
+        remaining match {
+          case head +: tail if perteneceLaxa(prefix :+ head, t) =>
+            divideHelper(prefix :+ head, tail)
+          case _ =>
+            (prefix, remaining)
+        }
+      }
+      divideHelper(Seq.empty[Char], s)
     }
     val (secuenciaEnArbol, secuenciaNoEnArbol) = dividirSecuencia(s, t)
     val nuevaRama = crearRama(secuenciaNoEnArbol)
