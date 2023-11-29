@@ -83,12 +83,17 @@ package object ReconstCadenas {
       }
     }
     // Función de filtrado para eliminar secuencias problemáticas según la descripción dada
+//    def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
+//      val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+//      val F = S.filter { s =>
+//        s.sliding(k).forall(w => SC.contains(w))
+//      }
+//      F
+//    }
     def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
-      val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
-      val F = S.filter { s =>
-        s.sliding(k).forall(w => SC.contains(w))
+      SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2)).filter {
+        s => (0 to s.length - k).forall(i => SC.contains(s.slice(i, i + k)))
       }
-      F
     }
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesaria.
     val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
@@ -118,13 +123,19 @@ package object ReconstCadenas {
       }
     }
     // Función de filtrado para eliminar secuencias problemáticas según la descripción dada.
+//    def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
+//      val trieSC = arbolDeSufijos(SC)
+//      val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+//      val F = S.filter { s =>
+//        s.sliding(k).forall(w => pertenece(w, trieSC))
+//      }
+//      F
+//    }
     def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
       val trieSC = arbolDeSufijos(SC)
-      val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
-      val F = S.filter { s =>
-        s.sliding(k).forall(w => pertenece(w, trieSC))
+      SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2)).filter {
+        s => (0 to s.length - k).forall(i => pertenece(s.slice(i, i + k), trieSC))
       }
-      F
     }
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesitada.
     val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
