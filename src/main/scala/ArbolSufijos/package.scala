@@ -116,40 +116,28 @@ package object ArbolSufijos {
         case Nil => Nodo(' ', marcada = false, List())
       }
     }
-    def agregarRama(arbolActual: Trie, caminoRestante: Seq[Char], nuevaRama: Trie): Trie = {
-      (arbolActual, caminoRestante) match {
-        case (Nodo(car, marcada, hijos), head :: tail) =>
+
+    def agregarRama(arbolActual: Trie, prefix: Seq[Char], remaining: Seq[Char]): Trie = {
+      (arbolActual, prefix, remaining) match {
+        case (Nodo(car, marcada, hijos), _, head :: tail) if perteneceLaxa(prefix :+ head, t) =>
           // Recorre recursivamente el árbol hasta llegar al camino deseado
           val updatedHijos = hijos.map { hijo =>
-            if (raiz(hijo) == head) agregarRama(hijo, tail, nuevaRama)
+            if (raiz(hijo) == head) agregarRama(hijo, prefix :+ head, tail)
             else hijo
           }
           Nodo(car, marcada, updatedHijos)
-        case (Hoja(car, marcada), Nil) =>
+        case (Hoja(car, marcada), _, _) =>
           // Convierte la hoja en un Nodo con el nuevo "subárbol" como hijo
-          Nodo(car, marcada, List(nuevaRama))
-        case (Nodo(car, marcada, hijos), Nil) =>
+          Nodo(car, marcada, List(crearRama(remaining)))
+        case (Nodo(car, marcada, hijos), _, _) =>
           // Agrega el nuevo nodo a la lista de hijos cuando el camino se detiene en un Nodo
-          Nodo(car, marcada, hijos :+ nuevaRama)
+          Nodo(car, marcada, hijos :+ crearRama(remaining))
+        case (_, _, _) =>
+          arbolActual
       }
     }
-    // Divide la secuencia en dos: Una que se encuentra dentro del arbol y otra que no está para ser agregada.
-    def dividirSecuencia(s: Seq[Char], t: Trie): (Seq[Char], Seq[Char]) = {
-      def divideHelper(prefix: Seq[Char], remaining: Seq[Char]): (Seq[Char], Seq[Char]) = {
-        remaining match {
-          case head +: tail if perteneceLaxa(prefix :+ head, t) =>
-            divideHelper(prefix :+ head, tail)
-          case _ =>
-            (prefix, remaining)
-        }
-      }
-      divideHelper(Seq.empty[Char], s)
-    }
-    val (secuenciaEnArbol, secuenciaNoEnArbol) = dividirSecuencia(s, t)
-    val nuevaRama = crearRama(secuenciaNoEnArbol)
-    agregarRama(t, secuenciaEnArbol, nuevaRama)
+    agregarRama(t, Seq.empty[Char], s)
   }
-
 
   def arbolDeSufijos(ss: Seq[Seq[Char]]): Trie = {
     // dada una secuencia no vacia de secuencias de vuelve el arbol de sufijos asociado a esas secuencias
