@@ -382,10 +382,13 @@ def crearRama(s: Seq[Char]): Trie = {
 }
 
 def dividirSecuencia(s: Seq[Char], t: Trie): (Seq[Char], Seq[Char]) = {
-  // Retorna el prefijo reconocido más largo
-  val parteReconocida = s.inits.find(prefix => perteneceLaxa(prefix, t)).getOrElse(Seq.empty)
-  // La parte no reconocida es la diferencia entre la secuencia original y la parte reconocida.
-  val parteNoReconocida = s.drop(parteReconocida.length)
+  val (parteReconocida, parteNoReconocida) = s.foldLeft((Seq.empty[Char], Seq.empty[Char])) {
+    case ((accPrefix, accRemaining), char) =>
+      if (perteneceLaxa(accPrefix :+ char, t))
+        (accPrefix :+ char, accRemaining)
+      else
+        (accPrefix, accRemaining :+ char)
+  }
   (parteReconocida, parteNoReconocida)
 }
 

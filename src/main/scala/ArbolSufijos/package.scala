@@ -25,11 +25,11 @@ package object ArbolSufijos {
           case caracter::tail => {
             t match {
               case Nodo(_, _, hijos) => {
-                val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == caracter)
-                childOption match {
-                  case Some(child) => perteneceInterna(cola, child)
-                  case None => false
-                }
+                val child = hijos.filter(hijo => raiz(hijo) == caracter)
+                if (child.nonEmpty)
+                  perteneceInterna(cola, child.head)
+                else
+                  false
               }
               case Hoja(_, _) => false
             }
@@ -52,11 +52,11 @@ package object ArbolSufijos {
     else {
       t match {
         case Nodo(' ', _, hijos) => {
-          val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == s.head)
-          childOption match {
-            case Some(child) => perteneceInterna(s, child)
-            case None => false
-          }
+          val child = hijos.filter(hijo => raiz(hijo) == s.head)
+          if (child.nonEmpty)
+            perteneceInterna(s, child.head)
+          else
+            false
         }
         case Hoja(_, _) => false
       }
@@ -70,11 +70,11 @@ package object ArbolSufijos {
           case caracter :: tail =>
             t match {
               case Nodo(_, _, hijos) =>
-                val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == caracter)
-                childOption match {
-                  case Some(child) => perteneceLaxaInterna(cola, child)
-                  case None => false
-                }
+                val child = hijos.filter(hijo => raiz(hijo) == caracter)
+                if (child.nonEmpty)
+                  perteneceLaxaInterna(cola, child.head)
+                else
+                  false
               case Hoja(_, _) => false
             }
           case Nil =>
@@ -95,11 +95,11 @@ package object ArbolSufijos {
     else {
       t match {
         case Nodo(' ', _, hijos) =>
-          val childOption: Option[Trie] = hijos.find(hijo => raiz(hijo) == s.head)
-          childOption match {
-            case Some(child) => perteneceLaxaInterna(s, child)
-            case None => false
-          }
+          val child = hijos.filter(hijo => raiz(hijo) == s.head)
+          if (child.nonEmpty)
+            perteneceLaxaInterna(s, child.head)
+          else
+            false
         case Hoja(_, _) => false
       }
     }
