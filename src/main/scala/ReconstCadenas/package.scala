@@ -86,7 +86,7 @@ package object ReconstCadenas {
     def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
       val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
       val F = S.filter { s =>
-        s.sliding(k).map(substring => SC.contains(substring)).reduce(_ && _)
+        s.sliding(k).forall(w => SC.contains(w))
       }
       F
     }
@@ -122,7 +122,7 @@ package object ReconstCadenas {
       val trieSC = arbolDeSufijos(SC)
       val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
       val F = S.filter { s =>
-        s.sliding(k).map(substring => pertenece(substring,trieSC)).reduce(_ && _)
+        s.sliding(k).forall(w => pertenece(w, trieSC))
       }
       F
     }
