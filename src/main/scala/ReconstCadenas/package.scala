@@ -47,7 +47,7 @@ package object ReconstCadenas {
     // concatena el alfabeto sino las secuencias obtenidas en la "iteración" inmediatamente anterior.
     // cadenas del doble te tamaño. Así mismo, son filtradas y sometidas a la misma evaluación hasta encontrar la
     // secuencia de caracteres buscada. El avance de k será de 'k*2' en vez de 'k+1'.
-    def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+    def generarCadenaTurbo(k: Int, SC: Seq[Seq[Char]]): Seq[Char] = {
       val newSC = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2)).filter(o)
       val resultado = newSC.to(LazyList).filter(w => w.length == n)
       if (resultado.nonEmpty) {
@@ -59,7 +59,7 @@ package object ReconstCadenas {
       }
     }
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesaria.
-    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+    val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
     // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }
@@ -71,7 +71,7 @@ package object ReconstCadenas {
 
     // La implementación anterior se mejora agregando 'filtrar()', la cual genera 'conjSec' pero a la vez
     // conservando solo aquellas secuencias cuyas "componentes" de tamaño 'k' pertenecen a 'SC'.
-    def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+    def generarCadenaTurbo(k: Int, SC: Seq[Seq[Char]]): Seq[Char] = {
       val newSC = filtrar(SC, k).filter(o)
       val resultado = newSC.to(LazyList).filter(w => w.length == n)
       if (resultado.nonEmpty) {
@@ -83,13 +83,15 @@ package object ReconstCadenas {
       }
     }
     // Función de filtrado para eliminar secuencias problemáticas según la descripción dada
-    def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
+    def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
       val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
-      val F = S.filter { s => s.sliding(k).forall(w => SC(w)) }
+      val F = S.filter { s =>
+        s.sliding(k).map(substring => SC.contains(substring)).reduce(_ && _)
+      }
       F
     }
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesaria.
-    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+    val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
     // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }
@@ -103,7 +105,7 @@ package object ReconstCadenas {
     // La implementación anterior se mejora utilizando una estructura de arbol de sufijos para
     // disminuir el tiempo en que se puede confirmar la pertenencia o no de una cadena dentro
     // del "conjunto" de secuencias actual ('SC'), específicamente dentro de 'filtrar()' ('trieSC').
-    def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
+    def generarCadenaTurbo(k: Int, SC: Seq[Seq[Char]]): Seq[Char] = {
       val conjSec = filtrar(SC, k)
       val newSC = conjSec.filter(o)
       val resultado = newSC.to(LazyList).filter(w => w.length == n)
@@ -116,14 +118,16 @@ package object ReconstCadenas {
       }
     }
     // Función de filtrado para eliminar secuencias problemáticas según la descripción dada.
-    def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
-      val trieSC = arbolDeSufijos(SC.toSeq)
+    def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
+      val trieSC = arbolDeSufijos(SC)
       val S = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
-      val F = S.filter { s => s.sliding(k).forall(w => pertenece(w, trieSC)) }
+      val F = S.filter { s =>
+        s.sliding(k).map(substring => pertenece(substring,trieSC)).reduce(_ && _)
+      }
       F
     }
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesitada.
-    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
+    val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
     // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }
