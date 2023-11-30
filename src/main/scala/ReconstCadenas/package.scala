@@ -72,11 +72,16 @@ package object ReconstCadenas {
     // La implementación anterior se mejora agregando 'filtrar()', la cual genera 'conjSec' pero a la vez
     // conservando solo aquellas secuencias cuyas "componentes" de tamaño 'k' pertenecen a 'SC'.
     def generarCadenaTurbo(k: Int, SC: Seq[Seq[Char]]): Seq[Char] = {
+      println(s"generarCadenaTurbo - inicio: SC.size = ${SC.size}, k = $k")  // Imprime el tamaño de SC y el valor de k al inicio de la función
       val newSC = filtrar(SC, k).filter(o)
+      println(s"generarCadenaTurbo - después de filtrar: newSC.size = ${newSC.size}")  // Imprime el tamaño de newSC después de la llamada a filtrar
+
       val resultado = newSC.to(LazyList).filter(w => w.length == n)
       if (resultado.nonEmpty) {
+        println(s"generarCadenaTurbo - fin: resultado encontrado")
         resultado.head
       } else if (k > n) {
+        println(s"generarCadenaTurbo - fin: k > n, devolviendo cadena vacía")  // Imprime un mensaje cuando k > n
         Seq.empty[Char]
       } else {
         generarCadenaTurbo(k * 2, newSC)
@@ -91,10 +96,12 @@ package object ReconstCadenas {
 //      F
 //    }
     def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
+    println(s"filtrar - inicio: SC.size = ${SC.size}, k = $k")
       SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2)).filter {
         s => (0 to s.length - k).forall(i => SC.contains(s.slice(i, i + k)))
       }
     }
+
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesaria.
     val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
     // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
