@@ -116,7 +116,6 @@ package object ArbolSufijos {
         case Nil => Nodo(' ', marcada = false, List())
       }
     }
-
     def agregarRama(arbolActual: Trie, prefix: Seq[Char], remaining: Seq[Char]): Trie = {
       (arbolActual, prefix, remaining) match {
         case (Nodo(car, marcada, hijos), _, head :: tail) if perteneceLaxa(prefix :+ head, t) =>
