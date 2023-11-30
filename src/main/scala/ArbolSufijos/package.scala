@@ -126,12 +126,15 @@ package object ArbolSufijos {
             else hijo
           }
           Nodo(car, marcada, updatedHijos)
-        case (Hoja(car, marcada), _, _) =>
+        case (Hoja(car, marcada), _, head :: tail) =>
           // Convierte la hoja en un Nodo con el nuevo "subárbol" como hijo
           Nodo(car, marcada, List(crearRama(remaining)))
-        case (Nodo(car, marcada, hijos), _, _) =>
+        case (Nodo(car, marcada, hijos), _, head :: tail) =>
           // Agrega el nuevo nodo a la lista de hijos cuando el camino se detiene en un Nodo
           Nodo(car, marcada, hijos :+ crearRama(remaining))
+        case (Nodo(car, false, hijos), _, Nil) =>
+          // Modifica el valor de marcada a true si no hay camino por recorrer pero los elementos de la cadena están en el arbol.
+          Nodo(car, marcada = true, hijos)
         case (_, _, _) =>
           arbolActual
       }
