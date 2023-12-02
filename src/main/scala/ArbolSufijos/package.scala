@@ -19,89 +19,43 @@ package object ArbolSufijos {
 
   def pertenece(s: Seq[Char], t: Trie): Boolean = {
     // Devuelve true si la secuencia s es reconocida por el trie t, y false si no.
-    def perteneceInterna(s: Seq[Char], t: Trie): Boolean = {
-      s match {
-        case head::cola => cola match {
-          case caracter::tail => {
-            t match {
-              case Nodo(_, _, hijos) => {
-                val child = hijos.filter(hijo => raiz(hijo) == caracter)
-                if (child.nonEmpty)
-                  perteneceInterna(cola, child.head)
-                else
-                  false
-              }
-              case Hoja(_, _) => false
-            }
-          }
-          case Nil =>
-            t match {
-              case Nodo(_, marcada, _) => marcada
-              case Hoja(_, marcada) => marcada
-            }
-        }
-        case Nil =>
+    s match {
+      case caracter::cola =>
           t match {
-            case Nodo(_, marcada, _) => marcada
-            case Hoja(_, marcada) => marcada
+            case Nodo(_, _, hijos) => {
+              val child = hijos.filter(hijo => raiz(hijo) == caracter)
+              if (child.nonEmpty)
+                pertenece(cola, child.head)
+              else
+                false
+            }
+            case Hoja(_, _) => false
           }
-      }
-    }
-    if (s.isEmpty)
-      false // Si la secuencia de entrada esta vacia, se considera que no pertenece a ningun arbol.
-    else {
-      t match {
-        case Nodo(' ', _, hijos) => {
-          val child = hijos.filter(hijo => raiz(hijo) == s.head)
-          if (child.nonEmpty)
-            perteneceInterna(s, child.head)
-          else
-            false
+      case Nil =>
+        t match {
+          case Nodo(_, marcada, _) => marcada
+          case Hoja(_, marcada) => marcada
         }
-        case Hoja(_, _) => false
-      }
     }
   }
 
   def perteneceLaxa(s: Seq[Char], t: Trie): Boolean = {
-    def perteneceLaxaInterna(s: Seq[Char], t: Trie): Boolean = {
-      s match {
-        case head :: cola => cola match {
-          case caracter :: tail =>
-            t match {
-              case Nodo(_, _, hijos) =>
-                val child = hijos.filter(hijo => raiz(hijo) == caracter)
-                if (child.nonEmpty)
-                  perteneceLaxaInterna(cola, child.head)
-                else
-                  false
-              case Hoja(_, _) => false
-            }
-          case Nil =>
-            t match {
-              case Nodo(_, marcada, _) => true
-              case Hoja(_, marcada) => true
-            }
+    s match {
+      case caracter :: cola =>
+        t match {
+          case Nodo(_, _, hijos) =>
+            val child = hijos.filter(hijo => raiz(hijo) == caracter)
+            if (child.nonEmpty)
+              perteneceLaxa(cola, child.head)
+            else
+              false
+          case Hoja(_, _) => false
         }
-        case Nil =>
-          t match {
-            case Nodo(_, marcada, _) => true
-            case Hoja(_, marcada) => true
-          }
-      }
-    }
-    if (s.isEmpty)
-      false
-    else {
-      t match {
-        case Nodo(' ', _, hijos) =>
-          val child = hijos.filter(hijo => raiz(hijo) == s.head)
-          if (child.nonEmpty)
-            perteneceLaxaInterna(s, child.head)
-          else
-            false
-        case Hoja(_, _) => false
-      }
+      case Nil =>
+        t match {
+          case Nodo(_, marcada, _) => true
+          case Hoja(_, marcada) => true
+        }
     }
   }
 
