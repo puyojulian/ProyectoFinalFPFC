@@ -127,9 +127,14 @@ package object ReconstCadenasPar {
     generarCadenaTurbo(1, conjuntoInicial)
   }
 
-  /*
+  /**
+   * @param umbral como un valor que dedice desde cuando se paraleliza
+   * @param n      como la longitud de la secuencia a recostruir
+   * @param o      como el  oraculo para esa secuencia
+   * @return secuencia reconstruida usando paralelismo de tareas (en su version TurboAcelerada)
+   */
+
   def reconstruirCadenaTurboAceleradaPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
-    val alfabeto = Seq('a', 'c', 'g', 't')
 
     // Función principal para generar la cadena turbo acalerada paralela dependiendo del umbral
     def generarCadenaTurbo(k: Int, SC: Seq[Seq[Char]]): Seq[Char] = {
@@ -154,22 +159,22 @@ package object ReconstCadenasPar {
     // Función de filtrado para eliminar secuencias problemáticas según la descripción dada (en su forma paralela)
     def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
       val trieSC = arbolDeSufijos(SC)
-      val (left, right) = SC.splitAt(SC.size / 2)
-      val taskLeft = task {
-        left.flatMap(seq1 => left.map(seq2 => seq1 ++ seq2)).filter(s => (0 to s.length - k).forall(i => pertenece(s.slice(i, i + k), trieSC)))
+      val S = if (SC.size < umbral) {
+        SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+      } else {
+        val grouped = SC.grouped(umbral).toSeq
+        val tasks = for (i <- grouped.indices) yield common.task {
+          grouped(i).flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
+        }
+        tasks.flatMap(task => task.join()).toSeq
       }
-      val taskRight = task {
-        right.flatMap(seq1 => right.map(seq2 => seq1 ++ seq2)).filter(s => (0 to s.length - k).forall(i => pertenece(s.slice(i, i + k), trieSC)))
-      }
-      taskLeft.join() ++ taskRight.join()
+      val F = S.filter { s => (0 to s.length - k).forall(i => pertenece(s.slice(i, i + k), trieSC)) }
+      F
     }
 
     val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
     generarCadenaTurbo(1, conjuntoInicial)
   }
-
-
-
 
   //  def reconstruirCadenaMejoradoPar ( umbral : Int ) (n : Int , o : Oraculo ) : Seq [Char]= {
   //    // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
@@ -286,50 +291,5 @@ package object ReconstCadenasPar {
     val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
     generarCadenaTurbo(1, conjuntoInicial)
   } */
-
-  def reconstruirCadenaTurboAceleradaPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
-    val alfabeto = Seq('a', 'c', 'g', 't')
-
-    // Función principal para generar la cadena turbo acalerada paralela dependiendo del umbral
-    def generarCadenaTurbo(k: Int, SC: Set[Seq[Char]]): Seq[Char] = {
-      val conjSec = filtrar(SC, k)
-      val newSC = if (conjSec.size <= umbral) {
-        conjSec.filter(o)
-      } else {
-        val (left, right) = conjSec.splitAt(conjSec.size / 2)
-        val (filteredLeft, filteredRight) = parallel(left.filter(o), right.filter(o))
-        filteredLeft ++ filteredRight
-      }
-
-      val resultado = newSC.to(LazyList).find(w => w.length == n)
-      resultado match {
-        case Some(secuencia) => secuencia
-        case None =>
-          if (k > n) Seq.empty[Char]
-          else generarCadenaTurbo(k * 2, newSC)
-      }
-    }
-
-    // Función de filtrado para eliminar secuencias problemáticas según la descripción dada (en su forma paralela)
-    def filtrar(SC: Set[Seq[Char]], k: Int): Set[Seq[Char]] = {
-      val trieSC = arbolDeSufijos(SC.toSeq)
-      val S = if (SC.size < umbral) {
-        SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
-      } else {
-        val grouped = SC.grouped(umbral).toSeq
-        val futures = for (i <- grouped.indices) yield task {
-          grouped(i).flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2))
-        }
-        futures.flatMap(future => future.join()).toSet
-      }
-      val F = S.filter { s => s.sliding(k).forall(w => pertenece(w, trieSC)) }
-      F
-    }
-
-    val conjuntoInicial: Set[Seq[Char]] = alfabeto.map(Seq(_)).toSet
-    generarCadenaTurbo(1, conjuntoInicial)
-  }
-
-
 
 }
