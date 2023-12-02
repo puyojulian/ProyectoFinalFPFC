@@ -52,10 +52,7 @@ package object ArbolSufijos {
           case Hoja(_, _) => false
         }
       case Nil =>
-        t match {
-          case Nodo(_, marcada, _) => true
-          case Hoja(_, marcada) => true
-        }
+        true
     }
   }
 
