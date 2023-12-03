@@ -18,7 +18,7 @@ package object ReconstCadenas {
     // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
 
     // Concatena a la derecha, en cada llamado recursivo, los caracteres del 'alfabeto' con
-    // cada secuencia dentro del conjunto de secuencias conseguido en la "iteración" inmediatamente anterior ('conjSec').
+    // cada secuencia dentro del conjunto de secuencias conseguido en la "iteración" inmediatamente anterior.
     // Para posteriormente ser filtrado dentro de la expresión for para que solo queden aquellas 'w' que cumplan 'o(w)' ('newSC').
     // Finalmente, se retorna el resultado de buscar la secuencia 'w' que cumpla 'w.length == n' en 'newSC'.
     // Donde si no se encuentra la secuencia buscada en 'n' recursiones se retorna una secuencia vacía
@@ -45,7 +45,7 @@ package object ReconstCadenas {
 
     // En base al algoritmo anterior, se mejora la implementación, cambiando en que ya no se
     // concatena el alfabeto sino las secuencias obtenidas en la "iteración" inmediatamente anterior.
-    // cadenas del doble te tamaño. Así mismo, son filtradas y sometidas a la misma evaluación hasta encontrar la
+    // cadenas del doble de tamaño. Así mismo, son filtradas y sometidas a la misma evaluación hasta encontrar la
     // secuencia de caracteres buscada. El avance de k será de 'k*2' en vez de 'k+1'.
     def generarCadenaTurbo(k: Int, SC: Seq[Seq[Char]]): Seq[Char] = {
       val newSC = SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2)).filter(o)

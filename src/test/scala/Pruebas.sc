@@ -298,6 +298,7 @@ reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 //pruebasTurboAcelerada(ss2_4096)
 
 // Pruebas de Rendimiento:
+// Pruebas entre versiones secuenciales:
 //compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 //compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 //compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
@@ -316,6 +317,26 @@ reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 //compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
 //compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
 //compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
+
+// Pruebas versiones secuencial vs paralela: Versiones Turbo
+//compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+//compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+//compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+//compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar)(s1_64.length, crearOraculo(costoOraculo)(s1_64))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_64.length, crearOraculo(costoOraculo)(s1_64))
+compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_64.length, crearOraculo(costoOraculo)(s1_64))
+//compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar)(s1_128.length, crearOraculo(costoOraculo)(s1_128))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_128.length, crearOraculo(costoOraculo)(s1_128))
+compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_128.length, crearOraculo(costoOraculo)(s1_128))
+//compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_256.length, crearOraculo(costoOraculo)(s1_256))
+compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAceleradaPar(2))(s1_256.length, crearOraculo(costoOraculo)(s1_256))
 
 // Pruebas de pertenece():
 val t = Nodo(' ', false, List(
