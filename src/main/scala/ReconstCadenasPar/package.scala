@@ -62,8 +62,12 @@ package object ReconstCadenasPar {
           conjSec.filter(o)
         } else {
           val (left, right) = conjSec.par.splitAt(conjSec.size / 2)
-          val (filteredLeft, filteredRight) = parallel(left.filter(o), right.filter(o))
-          (filteredLeft ++ filteredRight).seq
+          val ((l1cS, l2cS), (r1cS, r2cS)) = (left.splitAt(left.size / 2), right.splitAt(right.size / 2))
+          val ((fl1, fl2), (fr1, fr2)) = (
+            parallel(l1cS.filter(o), l2cS.filter(o)),
+            parallel(r1cS.filter(o), r2cS.filter(o))
+          )
+          (fl1 ++ fl2 ++ fr1 ++ fr2).seq
         }
         val resultado = newSC.to(LazyList).filter(w => w.length == n)
         if (resultado.nonEmpty) {
@@ -111,8 +115,12 @@ package object ReconstCadenasPar {
           conjSec.filter(o)
         } else {
           val (left, right) = conjSec.par.splitAt(conjSec.size / 2)
-          val (filteredLeft, filteredRight) = parallel(left.filter(o), right.filter(o))
-          (filteredLeft ++ filteredRight).seq
+          val ((l1cS, l2cS), (r1cS, r2cS)) = (left.splitAt(left.size / 2), right.splitAt(right.size / 2))
+          val ((fl1, fl2), (fr1, fr2)) = (
+            parallel(l1cS.filter(o), l2cS.filter(o)),
+            parallel(r1cS.filter(o), r2cS.filter(o))
+          )
+          (fl1 ++ fl2 ++ fr1 ++ fr2).seq
         }
         val resultado = newSC.to(LazyList).filter(w => w.length == n)
         if (resultado.nonEmpty) {
