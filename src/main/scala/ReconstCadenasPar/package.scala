@@ -10,6 +10,61 @@ import scala.collection.immutable.Set
 
 package object ReconstCadenasPar {
 
+  def reconstruirCadenaIngenuoPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+    // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
+    // y devuelve la secuencia reconstruida
+    // Usa paralelismo de tareas
+
+
+    def reconstruirRec(seq: Seq[Char]): Seq[Char] = {
+      if (seq.length == n) {
+        if (o(seq)) seq
+        else Seq.empty[Char]
+      } else {
+        val subproblems = alfabeto.flatMap(char => Seq(seq :+ char))
+
+        val results = subproblems.par.map(subproblem => reconstruirRec(subproblem))
+
+        if (subproblems.length <= umbral) {
+          // Resolver de manera secuencial si el tamaño es menor o igual al umbral
+          results.headOption.getOrElse(Seq.empty[Char])
+        } else {
+          // Resolver de manera paralela si el tamaño supera el umbral
+          results.reduceOption((acc, curr) => if (o(acc) && acc.length >= curr.length) acc else curr)
+            .getOrElse(Seq.empty[Char])
+        }
+      }
+    }
+
+    reconstruirRec(Seq.empty[Char])
+  }
+
+  def reconstruirCadenaMejoradoPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+    //    // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
+    //    // y devuelve la secuencia reconstruida
+    //    // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
+    //    // Usa paralelismo de tareas y/o datos
+
+    def generarCadenaPar(k: Int, SC: Seq[Seq[Char]]): Seq[Char] = {
+      val newSC = if (SC.length <= umbral) {
+        SC.flatMap(seq => alfabeto.view.map(char => seq :+ char).filter(o))
+      } else {
+        SC.par.flatMap(seq => alfabeto.view.map(char => seq :+ char).filter(o)).seq
+      }
+
+      newSC.find(w => w.length == n) match {
+        case Some(seq) => seq
+        case None =>
+          if (k > n || newSC.isEmpty) Seq.empty[Char]
+          else generarCadenaPar(k + 1, newSC)
+      }
+    }
+
+    // Se comienza la recursión de cola con 'k = 1' y 'SC = Seq(Seq.empty[Char])'.
+    generarCadenaPar(1, Seq(Seq.empty[Char]))
+
+  }
+
 //    def reconstruirCadenaMejoradoPar ( umbral : Int ) (n : Int , o : Oraculo ) : Seq [Char]= {
 //      // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
 //      // y devuelve la secuencia reconstruida
