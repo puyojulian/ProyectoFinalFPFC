@@ -130,10 +130,14 @@ val resultadoguia4 = reconstruirCadenaTurboAceleradaPar(1)(s1_32.length, crearOr
 // Pruebas funcionales
 
 // secuencias de longitud 8
-//reconstruirCadenaIngenuo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+reconstruirCadenaIngenuo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 //reconstruirCadenaIngenuo(s2_8.length, crearOraculo(costoOraculo)(s2_8))
 reconstruirCadenaMejorado(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-reconstruirCadenaMejorado(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+//reconstruirCadenaMejorado(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+
+reconstruirCadenaIngenuoPar(2)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+reconstruirCadenaMejoradoPar(2)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+
 reconstruirCadenaTurbo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 reconstruirCadenaTurbo(s2_8.length, crearOraculo(costoOraculo)(s2_8))
 reconstruirCadenaTurboMejorada(s1_8.length, crearOraculo(costoOraculo)(s1_8))
@@ -317,6 +321,15 @@ reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 //compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
 //compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
 //compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
+
+// Pruebas versiones secuencial vs paralela: Versiones Ingenuo y Mejorado
+//compararAlgoritmos(reconstruirCadenaIngenuo, reconstruirCadenaIngenuoPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+//compararAlgoritmos(reconstruirCadenaIngenuo, reconstruirCadenaIngenuoPar(2))(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s1_64.length, crearOraculo(costoOraculo)(s1_64))
 
 // Pruebas versiones secuencial vs paralela: Versiones Turbo
 compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
