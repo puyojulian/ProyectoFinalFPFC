@@ -430,29 +430,3 @@ val ss = Seq(Seq('c'),Seq('t'),Seq('c','t'),Seq('a','c'),Seq('a','c','t'),Seq('c
 val t_reconstruido = arbolDeSufijos(ss)
 print(t_reconstruido)
 print(t)
-
-def crearRama(s: Seq[Char]): Trie = {
-  s match {
-    case cabeza :: cola => cola match {
-      case head :: tail => Nodo(cabeza, false, List(crearRama(cola)))
-      case Nil => Hoja(cabeza, true)
-    }
-    case Nil => Nodo(' ', false, List())
-  }
-}
-
-def dividirSecuencia(s: Seq[Char], t: Trie): (Seq[Char], Seq[Char]) = {
-  val (parteReconocida, parteNoReconocida) = s.foldLeft((Seq.empty[Char], Seq.empty[Char])) {
-    case ((accPrefix, accRemaining), char) =>
-      if (perteneceLaxa(accPrefix :+ char, t))
-        (accPrefix :+ char, accRemaining)
-      else
-        (accPrefix, accRemaining :+ char)
-  }
-  (parteReconocida, parteNoReconocida)
-}
-
-val (secuenciaEnArbol, secuenciaNoEnArbol) = dividirSecuencia(secuencia6, adicionar(secuencia6,t))
-val nuevaRama = crearRama(secuenciaNoEnArbol)
-
-val nuevaRama = crearRama(Seq())
