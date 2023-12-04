@@ -39,23 +39,6 @@ package object ArbolSufijos {
     }
   }
 
-  def perteneceLaxa(s: Seq[Char], t: Trie): Boolean = {
-    s match {
-      case caracter :: cola =>
-        t match {
-          case Nodo(_, _, hijos) =>
-            val child = hijos.filter(hijo => raiz(hijo) == caracter)
-            if (child.nonEmpty)
-              perteneceLaxa(cola, child.head)
-            else
-              false
-          case Hoja(_, _) => false
-        }
-      case Nil =>
-        true
-    }
-  }
-
   def adicionar(s: Seq[Char], t: Trie): Trie = {
     // Prepara la "rama" a ser agregada al arbol correspondiente a la secuencia o resto de secuencia a ser añadida.
     def crearRama(s: Seq[Char]): Trie = {
@@ -69,7 +52,7 @@ package object ArbolSufijos {
     }
     def agregarRama(arbolActual: Trie, prefix: Seq[Char], remaining: Seq[Char]): Trie = {
       (arbolActual, prefix, remaining) match {
-        case (Nodo(car, marcada, hijos), _, head :: tail) if perteneceLaxa(prefix :+ head, t) =>
+        case (Nodo(car, marcada, hijos), _, head :: tail) if cabezas(Nodo(car, marcada, hijos)).contains(head) =>
           // Recorre recursivamente el árbol hasta llegar al camino deseado
           val updatedHijos = hijos.map { hijo =>
             if (raiz(hijo) == head) agregarRama(hijo, prefix :+ head, tail)

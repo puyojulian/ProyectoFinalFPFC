@@ -13,7 +13,7 @@ package object ReconstCadenasPar {
   def reconstruirCadenaIngenuoPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
     // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
-    // Usa paralelismo de tareas
+    // Usa paralelismo de tareas y/o datos
 
 
     def reconstruirRec(seq: Seq[Char]): Seq[Char] = {
@@ -42,7 +42,7 @@ package object ReconstCadenasPar {
   def reconstruirCadenaIngenuoParV2(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
     // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
-    // Usa paralelismo de tareas
+    // Usa paralelismo de tareas y/o datos
 
     def foldLeft(SC: Seq[Seq[Char]], nIt:Int): Seq[Char] = {
       if (n <= umbral) {
