@@ -16,29 +16,25 @@ def secAlAzar(long:Int, s:Seq[Char]): Seq[Char] = {
     secAlAzar(long,alfabeto(indiceAzar)+:s)
   }
 }
-val costoOraculo = 1
 
-val sec1=Seq('a', 'c', 'c', 'a')
-val sec2 = Seq('a', 'c', 'g', 'c', 'a')
-val sec3=secAlAzar(10,Seq())
+// PRUEBAS: ENUNCIADO
 
-val or_1=crearOraculo(costoOraculo)(sec1)
-val or_2=crearOraculo(costoOraculo)(sec2)
-val or_3=crearOraculo(costoOraculo)(sec3)
-
-// Pruebas con reconstruirCadenaIngenuoPar
-val umbral1 = 2
-val umbral2 = 4
-val umbral3 = 8
-
-//reconstruirCadenaIngenuoPar(umbral1)(sec1.length, or_1)
-
-reconstruirCadenaIngenuo(sec1.length, or_1)
-reconstruirCadenaIngenuo(sec2.length, or_2)
+//val costoOraculo = 1
+//
+//val sec1=Seq('a', 'c', 'c', 'a')
+//val sec2 = Seq('a', 'c', 'g', 'c', 'a')
+//val sec3=secAlAzar(10,Seq())
+//
+//val or_1=crearOraculo(costoOraculo)(sec1)
+//val or_2=crearOraculo(costoOraculo)(sec2)
+//val or_3=crearOraculo(costoOraculo)(sec3)
+//
+//reconstruirCadenaIngenuo(sec1.length, or_1)
+//reconstruirCadenaIngenuo(sec2.length, or_2)
 //reconstruirCadenaIngenuo(sec3.length, or_3)
-reconstruirCadenaMejorado(sec3.length, or_3)
-
-
+//reconstruirCadenaMejorado(sec3.length, or_3)
+//
+//
 def secsCortasParaPruebas(n:Int):Seq[Seq[Char]] = for {
   i <- 1 to n
   s = secAlAzar(i,Seq())
@@ -48,37 +44,6 @@ def secsLargasParaPruebas(n:Int):Seq[Seq[Char]] = for {
   i <- 1 to n
   s = secAlAzar(math.pow(2,i).toInt,Seq())
 } yield s
-
-def pruebasIngenuo(ss:Seq[Seq[Char]]) = for {
-  s <- ss
-  o = crearOraculo(costoOraculo)(s)
-} yield (s,reconstruirCadenaIngenuo(s.length,o))
-
-
-
-//def pruebasMejorado (ss:Seq[Seq[Char]]) = for {
-//  s <- ss
-//  o = crearOraculo(costoOraculo)(s)
-//} yield (s.length, s,reconstruirCadenaMejorado(s.length,o))
-//
-//
-//
-//def pruebasTurbo (ss:Seq[Seq[Char]]) = for {
-//  s <- ss
-//  o = crearOraculo(costoOraculo)(s)
-//} yield (s.length, s,reconstruirCadenaTurbo(s.length,o))
-//
-//def pruebasTurboMejorada (ss:Seq[Seq[Char]]) = for {
-//  s <- ss
-//  o = crearOraculo(costoOraculo)(s)
-//} yield (s.length, s,reconstruirCadenaTurboMejorada(s.length,o))
-//
-//
-//
-//def pruebasTurboAcelerada(ss:Seq[Seq[Char]]) = for {
-//  s <- ss
-//  o = crearOraculo(costoOraculo)(s)
-//} yield (s.length, s,reconstruirCadenaTurboAcelerada(s.length,o))
 
 
 // Secuencias para pruebas
@@ -118,40 +83,51 @@ val s1_2048 = ss2_2048(10)
 val s2_2048 = ss2_4096(10)
 val s1_4096 = ss2_4096(11)
 
-val resultadoguia = reconstruirCadenaTurbo(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-val resultaprueba2 = reconstruirCadenaTurboPar(1)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-val resultadoguia1 = reconstruirCadenaTurboMejorada(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-val resultadoprueba3 = reconstruirCadenaTurboMejoradaPar(1)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-val resultadoguia3 = reconstruirCadenaTurboAcelerada(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-val resultadoguia4 = reconstruirCadenaTurboAceleradaPar(1)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+//def pruebasIngenuo(ss:Seq[Seq[Char]]) = for {
+//  s <- ss
+//  o = crearOraculo(costoOraculo)(s)
+//} yield (s,reconstruirCadenaIngenuo(s.length,o))
+//
+//def pruebasMejorado (ss:Seq[Seq[Char]]) = for {
+//  s <- ss
+//  o = crearOraculo(costoOraculo)(s)
+//} yield (s.length, s,reconstruirCadenaMejorado(s.length,o))
+//
+//def pruebasTurbo (ss:Seq[Seq[Char]]) = for {
+//  s <- ss
+//  o = crearOraculo(costoOraculo)(s)
+//} yield (s.length, s,reconstruirCadenaTurbo(s.length,o))
+//
+//def pruebasTurboMejorada (ss:Seq[Seq[Char]]) = for {
+//  s <- ss
+//  o = crearOraculo(costoOraculo)(s)
+//} yield (s.length, s,reconstruirCadenaTurboMejorada(s.length,o))
+//
+//def pruebasTurboAcelerada(ss:Seq[Seq[Char]]) = for {
+//  s <- ss
+//  o = crearOraculo(costoOraculo)(s)
+//} yield (s.length, s,reconstruirCadenaTurboAcelerada(s.length,o))
 
-//val resultadoprueba4 = reconstruirCadenaTurboMejoradaParWop(1)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-
-// Pruebas funcionales
-
-// secuencias de longitud 8
+//// Pruebas funcionales
+//
+//// secuencias de longitud 8
 //reconstruirCadenaIngenuo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 //reconstruirCadenaIngenuo(s2_8.length, crearOraculo(costoOraculo)(s2_8))
-reconstruirCadenaMejorado(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+//reconstruirCadenaMejorado(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 //reconstruirCadenaMejorado(s2_8.length, crearOraculo(costoOraculo)(s2_8))
-
-//reconstruirCadenaIngenuoPar(2)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-//reconstruirCadenaIngenuoParV2(2)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-reconstruirCadenaMejoradoPar(2)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-
-reconstruirCadenaTurbo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-reconstruirCadenaTurbo(s2_8.length, crearOraculo(costoOraculo)(s2_8))
-reconstruirCadenaTurboMejorada(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-reconstruirCadenaTurboMejorada(s2_8.length, crearOraculo(costoOraculo)(s2_8))
-reconstruirCadenaTurboAcelerada(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-reconstruirCadenaTurboAcelerada(s2_8.length, crearOraculo(costoOraculo)(s2_8))
-
-//// secuencias de longitud 16
-reconstruirCadenaMejorado(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-reconstruirCadenaTurbo(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-reconstruirCadenaTurboMejorada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-
+//reconstruirCadenaTurbo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+//reconstruirCadenaTurbo(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+//reconstruirCadenaTurboMejorada(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+//reconstruirCadenaTurboMejorada(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+//reconstruirCadenaTurboAcelerada(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+//reconstruirCadenaTurboAcelerada(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+//
+////// secuencias de longitud 16
+//reconstruirCadenaMejorado(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+//reconstruirCadenaTurbo(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+//reconstruirCadenaTurboMejorada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+//reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+//
 //
 //// secuencias de longitud 32
 //reconstruirCadenaMejorado(s1_32.length, crearOraculo(costoOraculo)(s1_32))
@@ -209,7 +185,7 @@ reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 //reconstruirCadenaTurboAcelerada(s1_256.length, crearOraculo(costoOraculo)(s1_256))
 //reconstruirCadenaTurboAcelerada(s2_256.length, crearOraculo(costoOraculo)(s2_256))
 //reconstruirCadenaTurboAcelerada(s3_256.length, crearOraculo(costoOraculo)(s3_256))
-
+//
 //// secuencias de longitud 512
 //reconstruirCadenaMejorado(s1_512.length, crearOraculo(costoOraculo)(s1_512))
 //reconstruirCadenaMejorado(s2_512.length, crearOraculo(costoOraculo)(s2_512))
@@ -251,7 +227,6 @@ reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 //pruebasIngenuo(ss1_16)
 //
 //// con n=13 casi no puede, con n= 14, no pudo
-//
 //
 //pruebasMejorado(ss1_10)
 //pruebasMejorado(ss1_16.slice(0,10))
@@ -302,64 +277,121 @@ reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 //pruebasTurboAcelerada(ss2_2048)
 //pruebasTurboAcelerada(ss2_4096)
 
-// Pruebas de Rendimiento:
-// Pruebas entre versiones secuenciales:
-//compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-//compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-//compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-//compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_64.length, crearOraculo(costoOraculo)(s1_64))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_64.length, crearOraculo(costoOraculo)(s1_64))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_64.length, crearOraculo(costoOraculo)(s1_64))
-//compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_128.length, crearOraculo(costoOraculo)(s1_128))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_128.length, crearOraculo(costoOraculo)(s1_128))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_128.length, crearOraculo(costoOraculo)(s1_128))
-//compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
-//compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s1_256.length, crearOraculo(costoOraculo)(s1_256))
+// PRUEBAS PROPUESTAS: GRUPO 1
 
-// Pruebas versiones secuencial vs paralela: Versiones Ingenuo y Mejorado
-compararAlgoritmos(reconstruirCadenaIngenuoPar(2), reconstruirCadenaIngenuoParV2(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-compararAlgoritmos(reconstruirCadenaIngenuo, reconstruirCadenaIngenuoPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-compararAlgoritmos(reconstruirCadenaIngenuo, reconstruirCadenaIngenuoParV2(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+// Pruebas de Funcionamiento:
 
-//compararAlgoritmos(reconstruirCadenaIngenuo, reconstruirCadenaIngenuoPar(2))(s2_8.length, crearOraculo(costoOraculo)(s2_8))
-compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s2_8.length, crearOraculo(costoOraculo)(s2_8))
-compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s1_64.length, crearOraculo(costoOraculo)(s1_64))
 
-// Pruebas versiones secuencial vs paralela: Versiones Turbo
-compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_64.length, crearOraculo(costoOraculo)(s1_64))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_64.length, crearOraculo(costoOraculo)(s1_64))
-compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_64.length, crearOraculo(costoOraculo)(s1_64))
-compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_128.length, crearOraculo(costoOraculo)(s1_128))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_128.length, crearOraculo(costoOraculo)(s1_128))
-compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s1_128.length, crearOraculo(costoOraculo)(s1_128))
-compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_256.length, crearOraculo(costoOraculo)(s1_256))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_256.length, crearOraculo(costoOraculo)(s1_256))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAceleradaPar(2))(s1_256.length, crearOraculo(costoOraculo)(s1_256))
-compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAceleradaPar(2))(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
-compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAceleradaPar(2))(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
+
+// Pruebas de Rendimiento: Versiones secuenciales vs versiones paralelas.
+
+val costoOraculo = 1
+
+for {
+  noPrueba <- 1 to 5
+  i <- 1 to 3
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaIngenuo, reconstruirCadenaIngenuoPar(2))(s.length,o),
+  math.pow(2, i).toInt)
+
+// Descartamos reconstruirCadenaIngenuo de las pruebas con secuencias de tamaño: 2^4 a 2^10
+for {
+  noPrueba <- 1 to 5
+  i <- 1 to 7
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaMejoradoPar(2))(s.length,o),
+  math.pow(2, i).toInt)
+
+// Descartamos reconstruirCadenaMejorado de las pruebas con secuencias de tamaño: 2^8 a 2^10
+for {
+  noPrueba <- 1 to 5
+  i <- 1 to 9
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboPar(2))(s.length,o),
+  math.pow(2, i).toInt)
+
+// Descartamos reconstruirCadenaTurbo de las pruebas con secuencias de tamaño: 2^9 a 2^10
+for {
+  noPrueba <- 1 to 5
+  i <- 1 to 10
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboMejoradaPar(2))(s.length,o),
+  math.pow(2, i).toInt)
+
+for {
+  noPrueba <- 1 to 5
+  i <- 1 to 10
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboAceleradaPar(2))(s.length,o),
+  math.pow(2, i).toInt)
+
+// Pruebas de Rendimiento para análisis comparativo: Pruebas entre algoritmos.
+// Determinamos un rango de tamaños, en el que operen la mayoría de algoritmos en un tiempo moderado: 2^4 a 2^7
+
+// Entre secuenciales
+for {
+  noPrueba <- 1 to 5
+  i <- 4 to 7
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaMejorado, reconstruirCadenaTurbo)(s.length,o),
+  math.pow(2, i).toInt)
+
+for {
+  noPrueba <- 1 to 5
+  i <- 4 to 7
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaTurbo, reconstruirCadenaTurboMejorada)(s.length,o),
+  math.pow(2, i).toInt)
+
+for {
+  noPrueba <- 1 to 5
+  i <- 4 to 7
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaTurboMejorada, reconstruirCadenaTurboAcelerada)(s.length,o),
+  math.pow(2, i).toInt)
+
+// Entre paralelos: Aumentamos el rango para examinar como escala su rendimiento.
+for {
+  noPrueba <- 1 to 5
+  i <- 4 to 10
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaMejoradoPar(2), reconstruirCadenaTurboPar(2))(s.length,o),
+  math.pow(2, i).toInt)
+
+for {
+  noPrueba <- 1 to 5
+  i <- 4 to 10
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaTurboPar(2), reconstruirCadenaTurboMejoradaPar(2))(s.length,o),
+  math.pow(2, i).toInt)
+
+for {
+  noPrueba <- 1 to 5
+  i <- 4 to 10
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaTurboMejoradaPar(2), reconstruirCadenaTurboAceleradaPar(2))(s.length,o),
+  math.pow(2, i).toInt)
+
+// Entre TurboAcelerada secuencial y TurboPar
+
+for {
+  noPrueba <- 1 to 5
+  i <- 4 to 10
+  s = secAlAzar(math.pow(2, i).toInt, Seq())
+  o = crearOraculo(costoOraculo)(s)
+} yield (noPrueba, compararAlgoritmos(reconstruirCadenaTurboAcelerada, reconstruirCadenaTurboPar(2))(s.length,o),
+  math.pow(2, i).toInt)
 
 // Pruebas de pertenece():
 val t = Nodo(' ', false, List(
