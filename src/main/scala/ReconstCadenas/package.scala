@@ -60,7 +60,6 @@ package object ReconstCadenas {
     }
     // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesaria.
     val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
-    // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }
   def reconstruirCadenaTurboMejorada(n: Int, o: Oraculo) : Seq [Char]= {
@@ -88,9 +87,7 @@ package object ReconstCadenas {
         s => (0 to s.length - k).forall(i => SC.contains(s.slice(i, i + k)))
       }
     }
-    // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesaria.
     val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
-    // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }
   def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo) : Seq[Char]= {
@@ -115,16 +112,13 @@ package object ReconstCadenas {
         generarCadenaTurbo(k * 2, newSC)
       }
     }
-    // Función de filtrado para eliminar secuencias problemáticas según la descripción dada.
     def filtrar(SC: Seq[Seq[Char]], k: Int): Seq[Seq[Char]] = {
       val trieSC = arbolDeSufijos(SC)
       SC.flatMap(seq1 => SC.map(seq2 => seq1 ++ seq2)).filter {
         s => (0 to s.length - k).forall(i => pertenece(s.slice(i, i + k), trieSC))
       }
     }
-    // Conjunto inicial de secuencias de longitud 1 del alfabeto, nótese la conversión necesitada.
     val conjuntoInicial: Seq[Seq[Char]] = alfabeto.map(Seq(_))
-    // Se comienza la recursión de cola con 'k = 1' y 'SC = conjuntoInicial'.
     generarCadenaTurbo(1, conjuntoInicial)
   }
 }
