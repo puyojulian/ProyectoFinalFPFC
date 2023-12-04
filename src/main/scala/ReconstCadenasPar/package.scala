@@ -15,35 +15,6 @@ package object ReconstCadenasPar {
     // y devuelve la secuencia reconstruida
     // Usa paralelismo de tareas y/o datos
 
-
-    def reconstruirRec(seq: Seq[Char]): Seq[Char] = {
-      if (seq.length == n) {
-        if (o(seq)) seq
-        else Seq.empty[Char]
-      } else {
-        val subproblems = alfabeto.flatMap(char => Seq(seq :+ char))
-
-        val results = subproblems.par.map(subproblem => reconstruirRec(subproblem))
-
-        if (subproblems.length <= umbral) {
-          // Resolver de manera secuencial si el tamaño es menor o igual al umbral
-          results.headOption.getOrElse(Seq.empty[Char])
-        } else {
-          // Resolver de manera paralela si el tamaño supera el umbral
-          results.reduceOption((acc, curr) => if (o(acc) && acc.length >= curr.length) acc else curr)
-            .getOrElse(Seq.empty[Char])
-        }
-      }
-    }
-
-    reconstruirRec(Seq.empty[Char])
-  }
-
-  def reconstruirCadenaIngenuoParV2(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
-    // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
-    // y devuelve la secuencia reconstruida
-    // Usa paralelismo de tareas y/o datos
-
     def foldLeft(SC: Seq[Seq[Char]], nIt:Int): Seq[Char] = {
       if (n <= umbral) {
         (1 to n).foldLeft(Seq(Seq.empty[Char])) { (acc, _) =>
