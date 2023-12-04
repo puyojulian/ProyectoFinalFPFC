@@ -58,12 +58,17 @@ package object ReconstCadenasPar {
           r1SC.flatMap(seq => alfabeto.map(char => seq :+ char)),
           r2SC.flatMap(seq => alfabeto.map(char => seq :+ char))
         )
-        val acc = (l1acc ++ l2acc ++ r1acc ++ r2acc).seq
+        val acc = (l1acc ++ l2acc ++ r1acc ++ r2acc)
         if (nIt < n) {
-          foldLeft(acc, nIt+1)
+          foldLeft(acc.seq, nIt+1)
         }
         else if (nIt == n) {
-          acc.to(LazyList).filter(o).head
+          val (accL1, accL2, accR1, accR2) = parallel(
+            l1acc.filter(o), l2acc.filter(o),
+            r1acc.filter(o), r2acc.filter(o)
+          )
+          val resultado = (accL1 ++ accL2 ++ accR1 ++ accR2)
+          resultado.head
         } else
           Seq.empty[Char]
       }
