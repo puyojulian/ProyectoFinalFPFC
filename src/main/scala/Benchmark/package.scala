@@ -1,3 +1,12 @@
+/*
+  Archivo:  package.scala
+  Autor:           Profesor Juan Francisco Díaz Frias
+  Modificado por:  Julian Ernesto Puyo Mora
+  Curso:    Fundamentos de Programación Funcional y Concurrente
+  Trabajo:  Proyecto Final
+  Fecha de entrega: 07/12/2023
+*/
+
 import scala.collection.parallel.CollectionConverters._
 import org.scalameter._
 import Oraculo._

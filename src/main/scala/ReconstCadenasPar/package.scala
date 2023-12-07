@@ -1,3 +1,14 @@
+/*
+  Archivo:  package.scala
+  Autores:  Julian Ernesto Puyo Mora <julian.puyo@correounivalle.edu.co> <202226905>
+            Manuel Felipe Cardoso Forero <manuel.cardoso@correounivalle.edu.co> <2027288>
+            Franklin Aguirre Ortiz <franklin.aguirre@correounivalle.edu.co> <1841743>
+            Jean Paul Davalos Valencia <jean.davalos@correounivalle.edu.co> <1832375>
+  Curso:    Fundamentos de Programación Funcional y Concurrente
+  Trabajo:  Proyecto Final
+  Fecha de entrega: 07/12/2023
+*/
+
 import common._
 import scala.collection.parallel.CollectionConverters._
 import Oraculo._
@@ -44,10 +55,10 @@ package object ReconstCadenasPar {
   }
 
   def reconstruirCadenaMejoradoPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
-    //    // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
-    //    // y devuelve la secuencia reconstruida
-    //    // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
-    //    // Usa paralelismo de tareas y/o datos
+    // recibe la longitud de la secuencia que hay que reconstruir (n), y un oraculo para esa secuencia
+    // y devuelve la secuencia reconstruida
+    // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
+    // Usa paralelismo de tareas y/o datos
 
     def generarCadena(k: Int, SC: Seq[Seq[Char]]): Seq[Char] = {
       val newSC = if (n <= umbral) {
@@ -75,7 +86,7 @@ package object ReconstCadenasPar {
     generarCadena(1, Seq(Seq.empty[Char]))
   }
 
-  def reconstruirCadenaTurboPar(umbral: Int)(n: Int, o: Oraculo) : Seq [Char]= {
+  def reconstruirCadenaTurboPar(umbral: Int)(n: Int, o: Oraculo): Seq [Char]= {
     // recibela longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
     // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
@@ -110,7 +121,7 @@ package object ReconstCadenasPar {
     generarCadenaTurbo(1, conjuntoInicial)
   }
 
-  def reconstruirCadenaTurboMejoradaPar ( umbral : Int ) (n : Int , o : Oraculo ) : Seq [Char]= {
+  def reconstruirCadenaTurboMejoradaPar(umbral: Int)(n: Int, o: Oraculo): Seq [Char]= {
     // recibela longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
     // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
@@ -163,7 +174,7 @@ package object ReconstCadenasPar {
     generarCadenaTurbo(1, conjuntoInicial)
   }
 
-  def reconstruirCadenaTurboAceleradaPar ( umbral : Int ) (n : Int , o : Oraculo ) : Seq [Char]= {
+  def reconstruirCadenaTurboAceleradaPar(umbral: Int )(n: Int, o: Oraculo ): Seq [Char]= {
     // recibela longitud de la secuencia que hay que reconstruir (n, potencia de 2), y un oraculo para esa secuencia
     // y devuelve la secuencia reconstruida
     // Usa la propiedad de que si s=s1++s2 entonces s1 y s2 tambien son subsecuencias de s
