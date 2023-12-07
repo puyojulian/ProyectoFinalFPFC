@@ -1,3 +1,14 @@
+/*
+  Archivo:  package.scala
+  Autores:  Julian Ernesto Puyo Mora <julian.puyo@correounivalle.edu.co> <202226905>
+            Manuel Felipe Cardoso Forero <manuel.cardoso@correounivalle.edu.co> <2027288>
+            Franklin Aguirre Ortiz <franklin.aguirre@correounivalle.edu.co> <1841743>
+            Jean Paul Davalos Valencia <jean.davalos@correounivalle.edu.co> <1832375>
+  Curso:    Fundamentos de Programación Funcional y Concurrente
+  Trabajo:  Proyecto Final
+  Fecha de entrega: 07/12/2023
+*/
+
 package object ArbolSufijos {
   // Definiendo otra estructura para manipular Seq[Seq[Char]]
   abstract class Trie
